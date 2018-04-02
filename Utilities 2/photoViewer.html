@@ -1,0 +1,208 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8" />
+    <title>JS Example</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="linkedList.js"></script>
+</head>
+
+<body onload="main()">
+    <h1>Viewer</h1>
+    <div><img id="mainImg" src="InitialImage.jpg" alt="Main Image" /></div>
+
+    <hr>
+
+    <div>Photos' folder:<input type="text" id="photoFolder" value="umcp/"/></div>
+    <br />
+    <div>Common Name:<input type="text" id="commonName" value="college" /></div>
+    <br />
+
+    <div>Start Photo Number:<input type="text" id="startNum" value="1" />
+    End Photo Number:<input type="text" id="endNum" value="1" /></div>
+
+    <form>
+        <input type="button" id="slideShowButton" value="Slide Show">
+        <input type="button" id="randomSlideShowButton" value="Random Slide Show">
+        <input type="button" id="prevSlide" value="Previous Slide">
+        <input type="button" id="nextSlide" value="Next Slide">
+        <br />
+        <input type="button" id="autoSlideShow" value="Auto Slide Show">
+        <input type="button" id="autoRandomSlideShow" value="Auto Random Slide Show">
+        <input type="button" id="stopAutoSlideShow" value="Stop Auto Show">
+        <br />
+        <input type="button" id="resetButton" value="Reset">
+
+        <div id="output"></div>
+    </form>
+
+
+
+    <script>
+        "use strict";
+        let nIntervId;
+
+
+        /* compare function blank because don't use it */
+        function compareTo(x, y) {
+
+        }
+
+        /* Utility superclass */
+        function Utility(name, desc) {
+            this.name = name;
+            this.desc = desc;
+        }
+        Utility.prototype = {
+            constructor: Utility,
+            info: function() {
+                display(utilityName + ' ' + utilityDescription); 
+            }
+        }
+
+
+
+        /* Photo viewer class*/
+        function PhotoViewer() {
+            Utility.call(this, "Photo Viewer", "Description of how to view photos");
+            this.listOfPictures = null;
+            this.currImg = null;
+        }
+        PhotoViewer.prototype = new Utility();
+        PhotoViewer.prototype.constructor = PhotoViewer;
+
+        PhotoViewer.prototype.getArrayPhotosNames = function() {
+            this.listOfPictures = new List(compareTo);
+            /* obtain the values from the inputs */
+            let folderName = document.getElementById("photoFolder").value;
+            let commonName = document.getElementById("commonName").value;
+            let start = document.getElementById("startNum").value;
+            let end = document.getElementById("endNum").value;
+
+            if (Number.isNaN(start) || Number.isNaN(end) || (Number.parseInt(end) >= Number.parseInt(start))) {
+                /* add elements to the list */
+                for(let i = Number.parseInt(start); i < Number.parseInt(end)+1; i++) {
+                    let name = folderName + commonName + i + ".jpg";
+                    this.listOfPictures.insertAtEnd(name);
+                }
+                //display(this.listOfPictures.toString());
+
+                /* set the picture to the first one in the range */
+                document.getElementById("mainImg").src = this.listOfPictures.head.name;
+                this.currImg = this.listOfPictures.head;
+            }
+            else {
+                display("Invalid Range");
+            }
+        }
+        PhotoViewer.prototype.randomize = function() {
+            this.listOfPictures = new List(compareTo);
+            /* To randomize, I used the Fisher-Yates Shuffle on an array with the numbers from start to end and use the new array to create a list with the URLS */
+            let folderName = document.getElementById("photoFolder").value;
+            let commonName = document.getElementById("commonName").value;
+            let start = document.getElementById("startNum").value;
+            let end = document.getElementById("endNum").value;
+
+            if (Number.isNaN(start) || Number.isNaN(end) || (Number.parseInt(end) >= Number.parseInt(start))) {
+                let arrRange = [];
+                for (let i = Number.parseInt(start); i < Number.parseInt(end)+1; i++) {
+                    arrRange.push(i);
+                }
+                let randomizedArray = randomizeArray(arrRange);
+
+                for (let i = 0; i < randomizedArray.length; i++) {
+                    let name = folderName + commonName + randomizedArray[i] + ".jpg";
+                    this.listOfPictures.insertAtEnd(name);
+                }
+                //display(this.listOfPictures.toString());
+
+                /* set the picture to the first one in the range */
+                document.getElementById("mainImg").src = this.listOfPictures.head.name;
+                this.currImg = this.listOfPictures.head;
+            }
+            else {
+                display("Invalid Range");
+            }
+
+        }
+        PhotoViewer.prototype.reset = function() {
+            this.listOfPictures.head = null;
+            this.listOfPictures.tail = null;
+            this.currImg = null;
+            document.getElementById("photoFolder").value = "umcp/";
+            document.getElementById("commonName").value = "college";
+            document.getElementById("startNum").value = "1";
+            document.getElementById("endNum").value = "1";
+            document.getElementById("mainImg").src="InitialImage.jpg";
+            document.getElementById("output").innerHTML = "";       
+        }
+        PhotoViewer.prototype.nextImg = function() {
+            this.currImg = this.currImg.next;
+            if (this.currImg == null)
+                this.currImg = this.listOfPictures.head;
+            document.getElementById("mainImg").src = this.currImg.name;
+        }
+        PhotoViewer.prototype.prevImg = function() {
+            this.currImg = this.currImg.prev;
+            if (this.currImg == null)
+                this.currImg = this.listOfPictures.tail;
+            document.getElementById("mainImg").src = this.currImg.name;
+        }
+        
+
+        
+
+
+        function display(contents) { 
+            document.getElementById("output").innerHTML = contents;
+        }
+
+        /* Fisher-Yates shuffle */
+        function randomizeArray(arr) {
+            let curr = arr.length;
+
+            while (curr != 0) {
+                let rando = Math.floor(Math.random() * curr);
+                curr-=1;
+                let temp = arr[curr];
+                arr[curr] = arr[rando];
+                arr[rando] = temp;
+            }
+            return arr;
+        }
+        
+
+        function main() {
+            let slideShow = document.getElementById("slideShowButton");
+            let randomSlideShow = document.getElementById("randomSlideShowButton");
+            let pSlide = document.getElementById("prevSlide");
+            let nSlide = document.getElementById("nextSlide");
+            let r = document.getElementById("resetButton");
+
+            let autoSS = document.getElementById("autoSlideShow");
+            let autoRSS = document.getElementById("autoRandomSlideShow");
+            let stopSS = document.getElementById("stopAutoSlideShow");
+
+            let pv = new PhotoViewer();
+
+            /* setting the buttons */
+            slideShow.onclick = function() {pv.getArrayPhotosNames()};
+            randomSlideShow.onclick = function() {pv.randomize()};
+            r.onclick = function() {pv.reset()};
+            pSlide.onclick = function() {pv.prevImg()};
+            nSlide.onclick = function() {pv.nextImg()};
+            autoSS.onclick = function() {
+                pv.getArrayPhotosNames();
+                nIntervId = setInterval(function() {pv.nextImg()}, 1000);
+            }
+            autoRSS.onclick = function() {
+                pv.randomize();
+                nIntervId = setInterval(function() {pv.nextImg()}, 1000);
+            }
+            stopSS.onclick = function() {
+                clearInterval(nIntervId);
+            }
+            
+        }
+    </script>
+</body>
+</html>

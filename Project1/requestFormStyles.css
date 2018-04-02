@@ -1,0 +1,36 @@
+/* background color */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: lightgray;
+} 
+
+/* overall border */
+fieldset {
+    border-radius: .75em;
+}
+
+h1 {
+    text-decoration: underline;
+    padding: .25em;
+}
+
+/* firstname and lastname boxes */
+input[id="name"] {
+    width: 15em;
+    padding: .3em; /* help us see the arrows in <input type=number ...*/
+    border-radius: .75em; /* makes our input elements with round borders */
+}
+
+/* email box */
+input[id="account"] {
+    width: 15em;
+    padding: .3em; /* help us see the arrows in <input type=number ...*/
+    border-radius: .75em; /* makes our input elements with round borders */
+}
+
+input[id="specifications"] {
+    width: 50em;
+    height: 15em;
+    padding: .3em;
+    text-align: left;
+}

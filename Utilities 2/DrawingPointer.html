@@ -1,0 +1,218 @@
+
+<!doctype html>
+<html>
+    <head> 
+        <meta charset="UTF-8" /> 
+        <title>Mouse Drawing</title>
+        <script src="linkedList.js"></script>
+    </head>
+
+    <body>
+        <canvas id="canvas" width="400" height="300"></canvas>
+        <br>
+        <input type="button" id="startRecordingButton" value="Start Recording" />
+        <input type="button" id="stopRecordingButton" value="Stop Recording" />
+        <input type="button" id="playButton" value="Play" />
+        <input type="button" id="saveButton" value="Save" />
+        <input type="button" id="retreiveButton" value="Retreive Recording" />
+        <br>
+        <input type="button" id="changeColorButton" value="Change Color" />
+        <input type="button" id="clearButton" value="Clear Screen" />
+        <script>
+			"use strict";
+
+            /* blank because don't use it */
+            function compareTo(x, y) {
+
+            }
+
+
+
+            /* Utility superclass */
+            function Utility(name, desc) {
+                this.name = name;
+                this.desc = desc;
+            }
+            Utility.prototype = {
+                constructor: Utility,
+                info: function() {
+                    return utilityName + ' ' + utilityDescription; 
+                }
+            }
+
+            /* Recorder class */
+            function Recorder(c, l) {
+                Utility.call(this, "Recorder", "Records screen");
+                this.color = c;
+                this.sideLength = l;
+                this.isRecording = false;
+                this.listForRecorder = new List(compareTo);
+                this.otherRecording = null;
+            }
+            Recorder.prototype = new Utility();
+            Recorder.prototype.constructor = Recorder;
+
+            
+            /* Picks a number at random and changes the color */
+            Recorder.prototype.changeColor = function() {
+                    let x = Math.floor((Math.random() * 5) + 1);
+                    switch(x) {
+                        case 1:
+                            this.color = "blue";
+                            break;
+                        case 2:
+                            this.color = "black";
+                            break;
+                        case 3:
+                            this.color = "orange";
+                            break;
+                        case 4:
+                            this.color = "yellow";
+                            break;
+                        case 5: 
+                            this.color = "green";
+                            break;
+                        default:
+                            this.color = "red";
+
+                    }
+                }
+
+            /* clears the screen */
+            Recorder.prototype.clearScreen = function() {
+                let context = document.getElementById("canvas").getContext("2d");
+                context.clearRect(0, 0, 400, 300);
+            }
+            
+            /* Start recording the screen */
+            Recorder.prototype.startRecording = function() {
+                this.listForRecorder = new List(compareTo);
+                this.isRecording = true;
+            }
+
+            /* Stop recording the screen */
+            Recorder.prototype.stopRecording = function() {
+                this.isRecording = false;
+            }
+
+            /* Play the recording */
+            Recorder.prototype.playRecording = function() {
+                this.clearScreen();
+
+                let curr = this.listForRecorder.head;
+
+                let i = 0;
+
+                /*let intervalID = window.setInterval(function() {
+                    if (i < this.listForRecorder.size) {
+                        let arr = curr.name;
+                        let x = Number.parseInt(arr[0]);
+                        let y = Number.parseInt(arr[1]);
+                        let color = arr[2];
+                        this.draw(x, y, color, this.sideLength);
+                        curr = curr.next;
+                        i++;
+                    } else {
+                        window.clearInterval(intervalID);
+                    }
+                },30);*/
+
+                if (this.listForRecorder.head != null) {
+                    let curr = this.listForRecorder.head;
+                    while (curr != null) {
+                        let arr = curr.name;
+                        let x = arr[0];
+                        let y = arr[1];
+                        let color = arr[2];
+                        this.draw(x, y, color, this.sideLength);
+                        curr = curr.next;
+                        
+                    }
+                }
+                
+            }
+
+            /* save the recording */
+            Recorder.prototype.saveRecording = function() {
+                localStorage.setItem("recording", /* object i'm storing */ this.listForRecorder);
+            }
+
+            /* retreive the saved recording */
+            /* For some reason it'll retreive it since i can do display(this.listForRecorder) and it shows the whole list but it doesn't draw when i hit play */
+            Recorder.prototype.retreiveRecording = function() {
+                let list = localStorage.getItem("recording"); 
+                if (list == null) {
+                    display("Nothing stored");
+                } else {
+                    /* display here */
+                    this.listForRecorder = list;
+                }
+
+            }
+
+            
+            /* Function to draw 
+            checks the isRecording variable to determine if it should save values into the linked list */
+    		Recorder.prototype.draw = function(xPos, yPos, color, sideLength) {
+    			let context = document.getElementById("canvas").getContext("2d");
+				
+    			context.fillStyle = color;
+    			context.fillRect(xPos, yPos, sideLength, sideLength);
+
+                if (this.isRecording) {
+                        let values = [xPos, yPos, color];
+                        this.listForRecorder.insertAtEnd(values);
+                    }
+    		}
+
+            function draw(xPos, yPos, color, sideLength) {
+                let context = document.getElementById("canvas").getContext("2d");
+                
+                context.fillStyle = color;
+                context.fillRect(xPos, yPos, sideLength, sideLength);
+            }
+
+
+            function display(contents) { 
+                document.getElementById("output").innerHTML = contents;
+            }
+
+
+            main();
+            function main() {
+                var screenCap = new Recorder("red", 5);
+
+                document.writeln("<p>");
+                document.writeln("<strong>Move the mouse in the above area.");
+                document.writeln("Buttons to control this stuff");
+                document.writeln("</p>");
+
+                /* Draw fuction */
+                document.onmousemove=function(evt){screenCap.draw(evt.pageX, evt.pageY, screenCap.color, screenCap.sideLength);}
+                
+                /* Link the buttons */
+                let start = document.getElementById("startRecordingButton");
+                let stop = document.getElementById("stopRecordingButton");
+                let play = document.getElementById("playButton");
+                let save = document.getElementById("saveButton");
+                let retreive = document.getElementById("retreiveButton");
+                let cc = document.getElementById("changeColorButton");
+                let cs = document.getElementById("clearButton");
+
+
+                /* Set funcitons for the buttons */
+                cc.onclick = function() {screenCap.changeColor()};
+                cs.onclick = function() {screenCap.clearScreen()};
+
+                start.onclick = function() {screenCap.startRecording()};
+                stop.onclick = function() {screenCap.stopRecording()};
+                play.onclick = function() {screenCap.playRecording()};
+                save.onclick = function() {screenCap.saveRecording()};
+                retreive.onclick = function() {screenCap.retreiveRecording()};
+
+
+            }
+        </script>
+        <div id="output"></div>	
+    </body>
+</html>
