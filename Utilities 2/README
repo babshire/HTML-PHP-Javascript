@@ -1,0 +1,9 @@
+This project is composed of 2 parts: The drawing pointer and the photo viewer and their features are self explanatory when 
+looking at the interface.
+
+DrawingPointer.php:
+This is a simple drawing application that draws markers where the cursor is. 
+
+PhotoViewer.php:
+Retrieves photos from the specified folder location with the naming convention "commonname#.jpg". Creates a slideshow of the
+photos from the folder.
