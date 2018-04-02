@@ -1,0 +1,63 @@
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0 !important;
+}
+
+.card:hover {
+    cursor: pointer;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.card {
+    transition: box-shadow 0.1s ease-in-out;
+}
+
+.card-columns {
+    @include media-breakpoint-only(lg) {
+      column-count: 4;
+    }
+    @include media-breakpoint-only(xl) {
+      column-count: 5;
+    }
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.btn:hover {
+    cursor: pointer;
+}
+
+.jumbotron {
+    background: url("header.jpg") no-repeat center center;
+    background-position: 75% 45%;
+    background-size: cover;
+    border-radius: 0px;
+    margin-top: 56px;
+}
+
+.view-recipe-margin {
+    margin-top: 96px;
+}
+
+.search-box {
+    width: 42%;
+}
+
+.justify-left{
+    justify-content: left !important;
+}
+
+.justify-right {
+    justify-content: right !important;
+}
+
+.dish-name {
+    width: inherit !important;
+}
+
+.text-small {
+    font-size: 12px;
+    color: gray;
+}
