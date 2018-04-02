@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+    <head> 
+        <meta charset=UTF-8" /> 
+		<title>Project 4</title>
+		<script src="research.js"></script>
+        <link rel="stylesheet" href="research.css" />
+	</head>
+
+	<body>
+        <h1><u>Research Form</u></h1>
+		<form action="researchProcessing.php" method="get">
+            <fieldset>
+                <legend><em>General Information</em></legend>
+                Firstname: <input id="firstname" type="text" name="firstname" required/>
+                Lastname: <input id="lastname" type="text" name="lastname" required/><br /><br />
+                Phone: <input class="Phone" id="phoneFirstPart" type="text" name="phoneFirstPart" required/> - 
+                <input class= "Phone" id="phoneSecondPart" type="text" name="phoneSecondPart" required/> -
+                <input class="Phone" id="phoneThirdPart" type="text" name="phoneThirdPart" required/>
+                Email: <input id="email" type="email" name="email"  required/>
+            </fieldset>
+            <br />
+            <fieldset>
+                <legend><em>Research Study Data</em></legend><br />
+                <fieldset>
+                    <legend><em>Age/Height/Weight</em></legend>
+                    <b>Age: </b><input type="number" id="age" name="age" minimum="1" maximum="125" />
+                    <b id="height">Height: </b><input type="number" id="heightFeet" name="heightFeet" minimum="2" maximum="7" />
+                    <i id="feet">Feet</i><input type="number" id="heightInches" name="heightInches" minimum="0" maximum="11"/>
+                    <i id="inches">Inches</i>
+                    <b>Weight: </b><input type="number" id="weight" name="weight" minimum="1" maximum="600" />
+                    <i> Pounds</i>
+
+                </fieldset><br />
+                <fieldset>
+                    <legend><em>Conditions</em></legend>
+                    Which of the following conditions are present in your family? (Check all that apply)<br />
+                    <input type="checkbox" id="highBloodPressure" name="highBloodPressure" value="HighBloodPressure"/>High Blood Pressure
+                    <input type="checkbox" id="diabetes" name="diabetes" value="Diabetes"/>Diabetes
+                    <input type="checkbox" id="glaucoma" name="glaucoma" value="Glaucoma"/>Glaucoma
+                    <input type="checkbox" id="asthma" name="asthma" value="Asthma"/>Asthma
+                    <input type="checkbox" id="none" name="none" value="None"/>None
+                </fieldset><br />
+                <fieldset>
+                    <legend><em>Time Period</em></legend>
+                    How long have you experienced any of the above conditions?<br />
+                    <input type="radio" id="radio1" name="period" value="Never" /> Never
+                    <input type="radio" id="radio2" name="period" value="LessThanAYear" /> Less than a year
+                    <input type="radio" id="radio3" name="period" value="OneToTwoYears" /> One or two years
+                    <input type="radio" id="radio4" name="period" value="MoreThanTwoYears" /> More than two years
+                </fieldset><br />
+                <fieldset>
+                    <legend><em>Study Information</em></legend>
+                    Which study are you taking part of? 
+                    <select id="study" name="studyType">
+                        <option value="LongTerm" selected="selected">Long Term</option>
+                        <option value="ShortTerm">Short Term</option>
+                    </select>
+                         Assigned Study Id:
+                    <input type="text" class="study" id="firstFourDigits" name="firstFourDigits" placeholder="A777" required/>
+                    -
+                    <input type="text" class="study" id="secondFourDigits" name="secondFourDigits" placeholder="B888" required/>
+                </fieldset><br />
+                <fieldset>
+                    <legend><em>Additional Information (Comments)</em></legend>
+                    <textarea id="additionalComments" name="comments" rows="8" cols="50"></textarea>
+                </fieldset>
+
+            </fieldset>
+            <fieldset>
+                <input type="reset" value="Clear Form" />
+                <input type="submit" value="Submit Information"/>
+            </fieldset>
+            
+        </form>
+    </body>
+</html>

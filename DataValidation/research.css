@@ -1,0 +1,49 @@
+body {
+ 	font-family: Arial, Helvetica, sans-serif;
+} 
+
+.Phone {
+	width: 30px;
+}
+
+fieldset {
+    border-radius: .75em;
+}
+
+legend {
+	color: #A0522D;
+}
+
+.study {
+	width: 30px;
+}
+#email {
+	width: 300px;
+}
+
+#age {
+	width:30px;
+}
+
+#heightFeet {
+	width: 20px;
+	padding-right: 4px;
+}
+#heightInches {
+	width: 30px;
+}
+
+#weight {
+	width:40px;
+}
+#height {
+	padding-left: 30px;
+}
+
+#feet {
+	padding-right: 5px;
+}
+
+#inches {
+	padding-right: 30px;
+}
