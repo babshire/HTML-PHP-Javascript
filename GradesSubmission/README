@@ -1,0 +1,5 @@
+Run main.php
+
+This project first requires a login (loginId: cmsc289s password: terps) and reads the list of names in the file specified by 
+coursename and section. The user is able to select a grade and submit them (no effect). This project utilized a bit of object oriented PHP 
+to store information about the students.
